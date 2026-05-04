@@ -1,2 +1,2 @@
-# Portifolio
-Portfólio pessoal para apresenta meus projetos.
+# Portfolio
+Personal portfolio to showcase my projects.
