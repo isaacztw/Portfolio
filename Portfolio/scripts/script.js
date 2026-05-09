@@ -158,3 +158,47 @@ while (num % 2 === 0) {
 do {
     num = prompt("Diga um numero impar:");
 } while (num % 2 === 0);
+
+let fruta = [/*0*/"Maçã", /*1*/"Banana", /*2*/"Laranja", /*3*/"Uva"];
+//indice começa em 0
+console.log(fruta.length); //Quantidade de itens no array
+
+fruta.push("Abacaxi"); //Adiciona um item no final do array
+fruta.unshift("Morango");
+fruta.shift(); //Remove o primeiro item do array
+fruta.pop(); //Remove o último item do array
+
+console.log(fruta.indexOf("Abacaxi")); //Retorna o índice do item
+
+fruta.splice(2, 1); //Remove 1 item a partir do índice 2 (Laranja)
+fruta.splice(3,0,"Melancia","maça verde", "kiwi"); // A partir do índice 3, remove 0 itens e adiciona "Melancia", "maça verde" e "kiwi"
+
+fruta.forEach(function(item) {
+    console.log(item);
+});
+
+let clientes = [
+{nome: "Isaac",
+  numeroCartao: 12345, 
+  cvv: "67",
+  limite: 15000
+},
+{nome: "Bob",
+  numeroCartao: 67890, 
+  cvv: "89",
+  limite: 20000
+},
+{nome: "Charlie",
+  numeroCartao: 54321, 
+  cvv: "45",
+  limite: 10000
+}
+];
+
+for (let cliente of clientes) {
+    if (cliente.nome === "Isaac") {
+        console.log(`Cliente encontrado: ${cliente.nome}, Cartão: ${cliente.numeroCartao}, CVV: ${cliente.cvv}, Limite: ${cliente.limite}`);
+    } else {
+        console.log(`Cliente ${cliente.nome} - Não é o Isaac.`);
+    }
+}
