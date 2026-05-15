@@ -1,94 +1,179 @@
 const NOME = "Isaac Rezende";
-let tituloProfissional = "Systems Developer";
-let minhaBio = "Sou um cara ai." +
-    " Antes eu não era nada";
-let anoFormatura = 2026;
+const tituloProfissional = "Systems Developer";
+const minhaBio = "Sou um cara ai. Antes eu não era nada";
+const anoFormatura = 2026;
+const mesFormatura = 12;
+const diaFormatura = 31;
+const anoIngresso = 2025;
+const mesIngresso = 1;
+const diaIngresso = 1;
 
-let mesFormatura = 12;
-let diaFormatura = 31;
-let anoIngresso = 2025;
-let mesIngresso = 1;
-let diaIngresso = 1;
-
-let dataAtual = new Date(); // Data atual, data completa, biblioteca de data do JavaScript
-let mesAtual = dataAtual.getMonth() + 1; // Mês atual (0-11, por isso +1)
-let anoAtual = dataAtual.getFullYear(); // Ano atual
-let diaAtual = dataAtual.getDate(); // Dia atual
+const dataAtual = new Date();
+const mesAtual = dataAtual.getMonth() + 1;
+const anoAtual = dataAtual.getFullYear();
+const diaAtual = dataAtual.getDate();
 
 let indefinido;
-let nulo = null;
+const nulo = null;
 
-let curso = {
-    nome: "Desenvolvedor de Sistemas",
-    semestre: 3,
-    disciplinaAtual: "Linguagem de Programação",
+const curso = {
+  nome: "Desenvolvedor de Sistemas",
+  semestre: 3,
+  disciplinaAtual: "Linguagem de Programação",
 };
 
-console.log(typeof nulo); 
-console.log(typeof indefinido);
-console.log(typeof anoFormatura);
-console.log(typeof minhaBio);
-console.log(typeof tituloProfissional);
-console.log(typeof NOME);    
-console.log(typeof curso);
+const habilidades = [
+  "Python",
+  "HTML e CSS",
+  "Git/Github",
+  "MySQL",
+  "Lógica de Programação",
+];
 
-document.getElementById("meuNome").innerText = NOME;
-document.getElementById("tituloProfissional").innerText = tituloProfissional;
-document.getElementById("minhaBio").innerText = minhaBio;
-document.getElementById("anoFormatura").innerText = "Ano de formatura: " + anoFormatura;
-document.getElementById("tempoRestanteParaFormatura").innerText = `Tempo restante para formatura: \n ${anoFormatura - anoAtual} anos, ${mesFormatura - mesAtual} meses e ${diaFormatura - diaAtual} dias`;
-document.getElementById("tempoPorcentagemParaFormatura").innerText = `Porcentagem de Conclusão: \n ${Math.round(((anoAtual - anoIngresso) + (mesAtual - mesIngresso) / 12 + (diaAtual - diaIngresso) / 365) / ((anoFormatura - anoIngresso) + (mesFormatura - mesIngresso) / 12 + (diaFormatura - diaIngresso) / 365) * 100)}%`;
-document.getElementById("tempoPercorrido").innerText = `Tempo percorrido: \n ${anoAtual - anoIngresso} anos, ${mesAtual - mesIngresso} meses e ${diaAtual - diaIngresso} dias`;
+const btnVisual = document.getElementById("btn-visual");
+const btnLogica = document.getElementById("btn-logica");
+const resultadoQuiz = document.getElementById("resultado-quiz");
 
-let diasRestantes = diaFormatura - diaAtual;
-let mesesRestantes = mesFormatura - mesAtual;
-let anosRestantes = anoFormatura - anoAtual;
+let pontosFront = 0;
+let pontosBack = 0;
 
-if (diasRestantes <= 0 && mesesRestantes <= 0 && anosRestantes <= 0) {
-    document.getElementById("tempoRestanteParaFormatura").innerText = `Curso Concluído!`;
-};
-
-let nota = 8; 
-let aprovado = (nota >= 6)? "Aprovado" : "Reprovado";
-
-document.write(`<p> Nota: ${nota} - ${aprovado} </p>`);
-
-let diaSemana = dataAtual.getDay() + 1; 
-
-let diaEscrito;
-
-switch (diaSemana) {
-    case 1: diaEscrito = "Domingo"; break;
-    case 2: diaEscrito = "Segunda-feira"; break;
-    case 3: diaEscrito = "Terça-feira"; break;
-    case 4: diaEscrito = "Quarta-feira"; break;
-    case 5: diaEscrito = "Quinta-feira"; break;
-    case 6: diaEscrito = "Sexta-feira"; break;
-    case 7: diaEscrito = "Sábado"; break;
-    default: diaEscrito = "Dia inválido";
+function getElement(id) {
+  return document.getElementById(id);
 }
 
-document.write(`<p> Hoje é: ${diaEscrito} </p>`);
+function setText(id, text) {
+  const element = getElement(id);
+  if (element) {
+    element.innerText = text;
+  }
+}
 
-// ─── QUIZ DE PERFIL ───────────────────────────────────────────
-const btnVisual      = document.getElementById("btn-visual");
-const btnLogica      = document.getElementById("btn-logica");
-const resultadoQuiz  = document.getElementById("resultado-quiz");
+function criarListaHabilidades() {
+  const lista = document.createElement("ul");
+  let indice = 0;
+  do {
+    const item = document.createElement("li");
+    item.innerText = habilidades[indice];
+    lista.appendChild(item);
+    indice++;
+  } while (indice < habilidades.length);
+  return lista;
+}
 
-let pontosFront  = 0;
-let pontosBack   = 0;
+function mostrarHabilidades() {
+  const container = getElement("Habilidades");
+  if (!container) return;
+  container.innerHTML = "<h3>Habilidades</h3>";
+  container.appendChild(criarListaHabilidades());
+}
 
-btnVisual.addEventListener("click", function() {
-  pontosFront++;
-  exibirPerfil();
-});
+function calcularTempoRestante() {
+  const anos = anoFormatura - anoAtual;
+  const meses = mesFormatura - mesAtual;
+  const dias = diaFormatura - diaAtual;
+  return { anos, meses, dias };
+}
 
-btnLogica.addEventListener("click", function() {
-  pontosBack++;
-  exibirPerfil();
-});
+function calcularPorcentagemConclusao() {
+  const periodoDecorrido = (anoAtual - anoIngresso) + (mesAtual - mesIngresso) / 12 + (diaAtual - diaIngresso) / 365;
+  const periodoTotal = (anoFormatura - anoIngresso) + (mesFormatura - mesIngresso) / 12 + (diaFormatura - diaIngresso) / 365;
+  return Math.round((periodoDecorrido / periodoTotal) * 100);
+}
+
+function calcularTempoPercorrido() {
+  const anos = anoAtual - anoIngresso;
+  const meses = mesAtual - mesIngresso;
+  const dias = diaAtual - diaIngresso;
+  return { anos, meses, dias };
+}
+
+function formatarTempo(tempo) {
+  return `${tempo.anos} anos, ${tempo.meses} meses e ${tempo.dias} dias`;
+}
+
+function atualizarInformacoesAcademicas() {
+  setText("anoFormatura", `Ano de formatura: ${anoFormatura}`);
+  const tempoRestante = calcularTempoRestante();
+  setText("tempoRestanteParaFormatura", `Tempo restante para formatura: \n ${formatarTempo(tempoRestante)}`);
+  setText("tempoPorcentagemParaFormatura", `Porcentagem de Conclusão: \n ${calcularPorcentagemConclusao()}%`);
+  setText("tempoPercorrido", `Tempo percorrido: \n ${formatarTempo(calcularTempoPercorrido())}`);
+}
+
+function aplicarConclusaoSeNecessario() {
+  const { anos, meses, dias } = calcularTempoRestante();
+  if (dias <= 0 && meses <= 0 && anos <= 0) {
+    setText("tempoRestanteParaFormatura", "Curso Concluído!");
+  }
+}
+
+function exibirTiposBasicos() {
+  console.log(typeof nulo);
+  console.log(typeof indefinido);
+  console.log(typeof anoFormatura);
+  console.log(typeof minhaBio);
+  console.log(typeof tituloProfissional);
+  console.log(typeof NOME);
+  console.log(typeof curso);
+}
+
+function mostrarDadosPessoais() {
+  setText("meuNome", NOME);
+  setText("tituloProfissional", tituloProfissional);
+  setText("minhaBio", minhaBio);
+}
+
+function obterDiaDaSemana() {
+  const diaSemana = dataAtual.getDay() + 1;
+  switch (diaSemana) {
+    case 1:
+      return "Domingo";
+    case 2:
+      return "Segunda-feira";
+    case 3:
+      return "Terça-feira";
+    case 4:
+      return "Quarta-feira";
+    case 5:
+      return "Quinta-feira";
+    case 6:
+      return "Sexta-feira";
+    case 7:
+      return "Sábado";
+    default:
+      return "Dia inválido";
+  }
+}
+
+function exibirNotaAprovacao() {
+  const nota = 8;
+  const aprovado = nota >= 6 ? "Aprovado" : "Reprovado";
+  document.write(`<p> Nota: ${nota} - ${aprovado} </p>`);
+}
+
+function exibirDiaDaSemana() {
+  document.write(`<p> Hoje é: ${obterDiaDaSemana()} </p>`);
+}
+
+function configurarQuiz() {
+  if (!btnVisual || !btnLogica || !resultadoQuiz) {
+    return;
+  }
+
+  btnVisual.addEventListener("click", () => {
+    pontosFront++;
+    definirResultadoVisual();
+    exibirPerfil();
+  });
+
+  btnLogica.addEventListener("click", () => {
+    pontosBack++;
+    definirResultadoLogica();
+    exibirPerfil();
+  });
+}
 
 function exibirPerfil() {
+  if (!resultadoQuiz) return;
   if (pontosFront > pontosBack) {
     resultadoQuiz.textContent = "🎨 Perfil Front-End!";
   } else if (pontosBack > pontosFront) {
@@ -98,107 +183,164 @@ function exibirPerfil() {
   }
 }
 
-btnVisual.addEventListener("click", function() {
-  
+function aplicarEstiloResultadoQuiz(corFundo) {
+  resultadoQuiz.style.backgroundColor = corFundo;
+  resultadoQuiz.style.padding = "12px";
+  resultadoQuiz.style.borderRadius = "8px";
+  resultadoQuiz.style.marginTop = "10px";
+}
+
+function definirResultadoVisual() {
   resultadoQuiz.innerHTML = `
     <strong>🎨 Você tem perfil Front-End!</strong><br>
     Você curte criar interfaces, trabalhar com cores, layouts e a experiência do usuário.
     Tecnologias pra você: HTML, CSS, React, Vue.
   `;
-  resultadoQuiz.style.backgroundColor = "#e8f4fd";
-  resultadoQuiz.style.padding          = "12px";
-  resultadoQuiz.style.borderRadius     = "8px";
-  resultadoQuiz.style.marginTop        = "10px";
-});
+  aplicarEstiloResultadoQuiz("#e8f4fd");
+}
 
-btnLogica.addEventListener("click", function() {
-  
+function definirResultadoLogica() {
   resultadoQuiz.innerHTML = `
     <strong>⚙️ Você tem perfil Back-End!</strong><br>
     Você curte resolver problemas complexos, trabalhar com dados e fazer a mágica acontecer nos bastidores.
     Tecnologias pra você: Node.js, Python, bancos de dados.
   `;
-  resultadoQuiz.style.backgroundColor = "#e8f8f0";
-  resultadoQuiz.style.padding          = "12px";
-  resultadoQuiz.style.borderRadius     = "8px";
-  resultadoQuiz.style.marginTop        = "10px";
-});
-
-for (let i = 0; i <= 20; i++) {
-    let pares = (i % 2 === 0) ? "Par" : "Ímpar";
-    console.log(`${i} - ${pares}`);
+  aplicarEstiloResultadoQuiz("#e8f8f0");
 }
 
-let object = {
+function exibirNumerosParesEImpares() {
+  for (let i = 0; i <= 20; i++) {
+    const pares = i % 2 === 0 ? "Par" : "Ímpar";
+    console.log(`${i} - ${pares}`);
+  }
+}
+
+function mostrarPropriedadesObjeto() {
+  const object = {
     nome: "Isaac",
     idade: 18,
-    curso : "Desenvolvimento de Sistemas"
-};
+    curso: "Desenvolvimento de Sistemas",
+  };
 
-for (let chave in object) {
-  document.write(`<p>${chave}: ${object[chave]}</p>`);
+  for (const chave in object) {
+    document.write(`<p>${chave}: ${object[chave]}</p>`);
+  }
 }
 
-let alunos = ["Isaac", "Bob", "Charlie", "Anderson", "Ethan"];
-
-for (let contem of alunos) {
-  if (contem === "Isaac") {
-    document.write(`<p> ${contem} - Encontrado! </p>`);
- } else {
-    document.write(`<p> ${contem} - Não é o Isaac. </p>`);
- }
-}
-
-
-let num = prompt("Diga um numero impar:");
-while (num % 2 === 0) {
-    num = prompt("Número inválido! Por favor, digite um número ímpar:");
-}
-
-do {
-    num = prompt("Diga um numero impar:");
-} while (num % 2 === 0);
-
-let fruta = [/*0*/"Maçã", /*1*/"Banana", /*2*/"Laranja", /*3*/"Uva"];
-//indice começa em 0
-console.log(fruta.length); //Quantidade de itens no array
-
-fruta.push("Abacaxi"); //Adiciona um item no final do array
-fruta.unshift("Morango");
-fruta.shift(); //Remove o primeiro item do array
-fruta.pop(); //Remove o último item do array
-
-console.log(fruta.indexOf("Abacaxi")); //Retorna o índice do item
-
-fruta.splice(2, 1); //Remove 1 item a partir do índice 2 (Laranja)
-fruta.splice(3,0,"Melancia","maça verde", "kiwi"); // A partir do índice 3, remove 0 itens e adiciona "Melancia", "maça verde" e "kiwi"
-
-fruta.forEach(function(item) {
-    console.log(item);
-});
-
-let clientes = [
-{nome: "Isaac",
-  numeroCartao: 12345, 
-  cvv: "67",
-  limite: 15000
-},
-{nome: "Bob",
-  numeroCartao: 67890, 
-  cvv: "89",
-  limite: 20000
-},
-{nome: "Charlie",
-  numeroCartao: 54321, 
-  cvv: "45",
-  limite: 10000
-}
-];
-
-for (let cliente of clientes) {
-    if (cliente.nome === "Isaac") {
-        console.log(`Cliente encontrado: ${cliente.nome}, Cartão: ${cliente.numeroCartao}, CVV: ${cliente.cvv}, Limite: ${cliente.limite}`);
+function mostrarAlunos() {
+  const alunos = ["Isaac", "Bob", "Charlie", "Anderson", "Ethan"];
+  for (const contem of alunos) {
+    if (contem === "Isaac") {
+      document.write(`<p> ${contem} - Encontrado! </p>`);
     } else {
-        console.log(`Cliente ${cliente.nome} - Não é o Isaac.`);
+      document.write(`<p> ${contem} - Não é o Isaac. </p>`);
     }
+  }
 }
+
+function solicitarNumeroImpar(mensagem) {
+  let numero = prompt(mensagem);
+  while (numero % 2 === 0) {
+    numero = prompt("Número inválido! Por favor, digite um número ímpar:");
+  }
+  return numero;
+}
+
+function processarEntradaNumeroImpar() {
+  solicitarNumeroImpar("Diga um numero impar:");
+  do {
+    prompt("Diga um numero impar:");
+  } while (prompt("Diga um numero impar:") % 2 === 0);
+}
+
+function manipularFrutas() {
+  const fruta = ["Maçã", "Banana", "Laranja", "Uva"];
+  console.log(fruta.length);
+  fruta.push("Abacaxi");
+  fruta.unshift("Morango");
+  fruta.shift();
+  fruta.pop();
+  console.log(fruta.indexOf("Abacaxi"));
+  fruta.splice(2, 1);
+  fruta.splice(3, 0, "Melancia", "maça verde", "kiwi");
+  fruta.forEach(function (item) {
+    console.log(item);
+  });
+}
+
+function analisarClientes() {
+  const clientes = [
+    {
+      nome: "Isaac",
+      numeroCartao: 12345,
+      cvv: "67",
+      limite: 15000,
+    },
+    {
+      nome: "Bob",
+      numeroCartao: 67890,
+      cvv: "89",
+      limite: 20000,
+    },
+    {
+      nome: "Charlie",
+      numeroCartao: 54321,
+      cvv: "45",
+      limite: 10000,
+    },
+  ];
+
+  for (const cliente of clientes) {
+    if (cliente.nome === "Isaac") {
+      console.log(`Cliente encontrado: ${cliente.nome}, Cartão: ${cliente.numeroCartao}, CVV: ${cliente.cvv}, Limite: ${cliente.limite}`);
+    } else {
+      console.log(`Cliente ${cliente.nome} - Não é o Isaac.`);
+    }
+  }
+}
+
+function apresentarProjetos() {
+  const projetos = [
+    {
+      nome: "Aplicação de Estacionamento",
+      tecnologias: ["Python", "Tkinter", "fpdf2"],
+      conhecimentos: "VsCODE, Github, pip, PyInstaller, PyPDF2",
+      descricao: "Aplicação desktop para controle de estacionamento, com geração de recibos em PDF e interface gráfica para cadastro de veículo e controle de vagas",
+    },
+    {
+      nome: "Lyrics",
+      tecnologias: ["HTML", "JavaScript", "CSS", "GitHub", "NodeJS", "Local API"],
+      conhecimentos: "VsCODE, Github, npm, Express, API local, Fetch API",
+      descricao: "Site para buscar letras de músicas, utilizando API local para armazenar as letras e tecnologias web",
+    },
+    {
+      nome: "AutoClick",
+      tecnologias: ["Python"],
+      conhecimentos: "VsCODE, Github, PyAutoGUI, Keyboard, Tkinter",
+      descricao: "Um simples autoclick para quem tem preguiça de ficar clicando",
+    },
+  ];
+
+  console.log("Projetos definidos:", projetos);
+  console.table(projetos);
+}
+
+function inicializarPagina() {
+  exibirTiposBasicos();
+  mostrarDadosPessoais();
+  mostrarHabilidades();
+  atualizarInformacoesAcademicas();
+  aplicarConclusaoSeNecessario();
+  exibirNotaAprovacao();
+  exibirDiaDaSemana();
+  configurarQuiz();
+  exibirNumerosParesEImpares();
+  mostrarPropriedadesObjeto();
+  mostrarAlunos();
+  processarEntradaNumeroImpar();
+  manipularFrutas();
+  analisarClientes();
+  apresentarProjetos();
+}
+
+inicializarPagina();
